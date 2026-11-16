@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SubmissionForm from "@/lib/components/submission-form";
 
 export default function ContactPage() {
   return (
@@ -20,6 +21,7 @@ export default function ContactPage() {
         .contact-input, .contact-textarea { width: 100%; border: 1px solid rgba(15,31,77,.14); border-radius: 8px; padding: 14px 16px; font: inherit; color: #0f1f4d; background: #fffdf8; }
         .contact-textarea { min-height: 132px; resize: vertical; }
         .contact-button { border: 0; border-radius: 999px; padding: 15px 24px; background: #d4a017; color: #0f1f4d; font-weight: 800; cursor: pointer; }
+        .contact-button:disabled { cursor: wait; opacity: .7; }
         .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 54px; }
         .contact-small { background: white; border-radius: 8px; padding: 24px; border: 1px solid rgba(15,31,77,.08); }
         .contact-small h2 { margin: 0 0 10px; font-family: 'Playfair Display', serif; font-size: 26px; }
@@ -64,16 +66,23 @@ export default function ContactPage() {
                 </div>
               </div>
             </div>
-            <form className="contact-card">
+            <div className="contact-card">
               <div className="contact-kicker">Send a Message</div>
-              <div className="contact-form">
-                <input className="contact-input" name="name" placeholder="Name" />
-                <input className="contact-input" name="email" type="email" placeholder="Email" />
-                <input className="contact-input" name="subject" placeholder="Subject" />
-                <textarea className="contact-textarea" name="message" placeholder="How can we help?" />
-                <button className="contact-button" type="submit">Submit Message</button>
-              </div>
-            </form>
+              <SubmissionForm
+                endpoint="/api/contact"
+                className="contact-form"
+                buttonClassName="contact-button"
+                buttonLabel="Submit Message"
+                successMessage="Thanks for your message. We'll be in touch."
+              >
+                <input className="contact-input" name="firstName" aria-label="First name" placeholder="First name" autoComplete="given-name" maxLength={100} required />
+                <input className="contact-input" name="lastName" aria-label="Last name" placeholder="Last name" autoComplete="family-name" maxLength={100} required />
+                <input className="contact-input" name="phone" type="tel" aria-label="Phone number (optional)" placeholder="Phone number (optional)" autoComplete="tel" maxLength={30} />
+                <input className="contact-input" name="email" type="email" aria-label="Email" placeholder="Email" autoComplete="email" maxLength={254} required />
+                <input className="contact-input" name="subject" aria-label="Subject (optional)" placeholder="Subject (optional)" maxLength={200} />
+                <textarea className="contact-textarea" name="message" aria-label="How can we help?" placeholder="How can we help?" maxLength={5000} required />
+              </SubmissionForm>
+            </div>
           </section>
           <section className="contact-grid">
             <div className="contact-small">

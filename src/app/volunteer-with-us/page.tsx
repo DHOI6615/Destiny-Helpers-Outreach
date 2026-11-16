@@ -1,14 +1,6 @@
 import Link from "next/link";
-
-const volunteerOptions = [
-  "Social Media Management",
-  "Photography/Videography",
-  "Set up/ Break down",
-  "Distribution",
-  "Pick up/ drop off donations",
-  "Pre-event packaging",
-  "Service/ Skill/ Expertise",
-];
+import SubmissionForm from "@/lib/components/submission-form";
+import { volunteerOptions } from "@/lib/data/volunteer-options";
 
 export default function VolunteerWithUsPage() {
   return (
@@ -44,6 +36,7 @@ export default function VolunteerWithUsPage() {
         .volunteer-submit-row { display: flex; justify-content: flex-end; padding-top: 8px; }
         .volunteer-submit { border: 0; border-radius: 999px; background: #f4b31a; color: #10204f; cursor: pointer; font: inherit; font-weight: 800; padding: 14px 34px; transition: transform .2s ease, box-shadow .2s ease; }
         .volunteer-submit:hover { box-shadow: 0 14px 30px rgba(212,160,23,.24); transform: translateY(-1px); }
+        .volunteer-submit:disabled { cursor: wait; opacity: .7; transform: none; }
         .volunteer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 58px; }
         .volunteer-card { background: white; border: 1px solid rgba(16,32,79,.08); border-radius: 8px; padding: 26px; }
         .volunteer-card h2 { margin: 0 0 10px; font-family: 'Playfair Display', serif; font-size: 28px; }
@@ -86,26 +79,33 @@ export default function VolunteerWithUsPage() {
             <h2 className="volunteer-form-heading" id="volunteer-form-title">Become a Destiny Helper</h2>
             <p className="volunteer-form-subtitle">Get involved and create meaningful impact!</p>
             <div className="volunteer-form-pill">New volunteer</div>
-            <form className="volunteer-form">
+            <SubmissionForm
+              endpoint="/api/volunteer"
+              className="volunteer-form"
+              buttonClassName="volunteer-submit"
+              buttonRowClassName="volunteer-submit-row"
+              buttonLabel="Submit"
+              successMessage="Thanks for volunteering. We'll be in touch."
+            >
               <div className="volunteer-field">
                 <label htmlFor="volunteer-name">Your Name *</label>
-                <input id="volunteer-name" name="name" type="text" required />
+                <input id="volunteer-name" name="name" type="text" autoComplete="name" maxLength={200} required />
               </div>
               <div className="volunteer-field">
                 <label htmlFor="volunteer-phone">Phone Number *</label>
-                <input id="volunteer-phone" name="phone" type="tel" defaultValue="+1" required />
+                <input id="volunteer-phone" name="phone" type="tel" autoComplete="tel" maxLength={30} defaultValue="+1" required />
               </div>
               <div className="volunteer-field">
                 <label htmlFor="volunteer-email">Your Email *</label>
-                <input id="volunteer-email" name="email" type="email" required />
+                <input id="volunteer-email" name="email" type="email" autoComplete="email" maxLength={254} required />
               </div>
               <div className="volunteer-field">
                 <label htmlFor="volunteer-company">Your Company</label>
-                <input id="volunteer-company" name="company" type="text" />
+                <input id="volunteer-company" name="company" type="text" autoComplete="organization" maxLength={200} />
               </div>
               <div className="volunteer-field">
                 <label htmlFor="volunteer-subject">Subject *</label>
-                <input id="volunteer-subject" name="subject" type="text" required />
+                <input id="volunteer-subject" name="subject" type="text" maxLength={200} required />
               </div>
               <fieldset className="volunteer-field volunteer-check-field">
                 <legend>How would you like to volunteer? *</legend>
@@ -120,12 +120,9 @@ export default function VolunteerWithUsPage() {
               </fieldset>
               <div className="volunteer-field">
                 <label htmlFor="volunteer-question">Your Question *</label>
-                <textarea id="volunteer-question" name="question" required />
+                <textarea id="volunteer-question" name="question" maxLength={5000} required />
               </div>
-              <div className="volunteer-submit-row">
-                <button className="volunteer-submit" type="submit">Submit</button>
-              </div>
-            </form>
+            </SubmissionForm>
           </section>
           <section className="volunteer-grid">
             <div className="volunteer-card">
